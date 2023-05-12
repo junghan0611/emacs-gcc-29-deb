@@ -8,10 +8,12 @@ RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list &&\
     apt-transport-https\
     ca-certificates\
     build-essential \
+    fonts-noto-color-emoji fonts-symbola fonts-naver-d2coding \
+    fonts-noto-cjk \
+    sqlite3 ripgrep fd-find locate \
     gcc-11 g++-11 libgccjit0 libgccjit-11-dev \
     autoconf \
     wget \
-    cmake \
     git \
     pkg-config \
     libgnutls28-dev \
@@ -73,7 +75,6 @@ RUN ./autogen.sh && ./configure \
     --program-transform-name='s/^ctags$/ctags.emacs/' \
     --with-native-compilation=aot CFLAGS="-O2 -pipe"
 
-
 RUN make -j $(nproc)
 
 # Create package
@@ -84,10 +85,7 @@ Version: ${EMACS_VERSION}\n\
 Section: base\n\
 Priority: optional\n\
 Architecture: amd64\n\
-Depends: fonts-noto-color-emoji, fonts-symbola, fonts-naver-d2coding, fonts-nanum-coding, fonts-nanum-extra, fonts-nanum \
-fonts-noto-cjk, zathura, zathura-pdf-poppler, libvterm-bin, libvterm0, libtool-bin, fasd, cmake, texinfo, libjansson4 \
-imagemagick, inkscape, sqlite3, ripgrep, fd-find, locate, aspell, hunspell, hunspell-ko \
-libgif7, libotf1, libgccjit0, libgtk-3-0, librsvg2-2, libtiff5, libjansson4, libacl1, libgmp10, libwebp7, libsqlite3-0\n\
+Depends: fonts-noto-color-emoji, fonts-symbola, fonts-naver-d2coding, fonts-noto-cjk, texinfo, libjansson4, imagemagick, sqlite3, ripgrep, fd-find, locate, aspell, libgif7, libotf1, libgccjit0, libgtk-3-0, librsvg2-2, libtiff5, libjansson4, libacl1, libgmp10, libwebp7, libsqlite3-0\n\
 Maintainer: Junghanacs\n\
 Description: Emacs with native compilation, X11 gtk and tree-sitter\n\
     --with-json \

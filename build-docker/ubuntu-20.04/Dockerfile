@@ -10,10 +10,12 @@ RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list &&\
     apt-transport-https\
     ca-certificates\
     build-essential \
+    fonts-noto-color-emoji fonts-symbola fonts-naver-d2coding \
+    fonts-noto-cjk \
+    sqlite3 ripgrep fd-find locate \
     gcc-10 g++-10 libgccjit0 libgccjit-10-dev \
     autoconf \
     wget \
-    cmake \
     git \
     pkg-config \
     libgnutls28-dev \
@@ -78,6 +80,7 @@ RUN ./autogen.sh && ./configure \
 RUN make -j $(nproc)
 
 # Create package
+# Conflicts: emacs
 RUN EMACS_VERSION=$(sed -ne 's/AC_INIT(\[GNU Emacs\], \[\([0-9.]\+\)\], .*/\1/p' configure.ac).$(date +%y.%m.%d.%H) \
     && make install prefix=/opt/emacs-gcc-gtk_${EMACS_VERSION}/usr/local \
     && mkdir emacs-gcc-gtk_${EMACS_VERSION}/DEBIAN && echo "Package: emacs-gcc-gtk\n\
@@ -85,8 +88,7 @@ Version: ${EMACS_VERSION}\n\
 Section: base\n\
 Priority: optional\n\
 Architecture: amd64\n\
-Depends: libvterm0, libgif7, libotf1, libgccjit0, libgtk-3-0, librsvg2-2, libtiff5, libjansson4, libacl1, libgmp10, libwebp7, libsqlite3-0\n\
-Conflicts: emacs\n\
+Depends: fonts-noto-color-emoji, fonts-symbola, fonts-naver-d2coding, fonts-noto-cjk, texinfo, libjansson4, imagemagick, sqlite3, ripgrep, fd-find, locate, aspell, libgif7, libotf1, libgccjit0, libgtk-3-0, librsvg2-2, libtiff5, libjansson4, libacl1, libgmp10, libwebp7, libsqlite3-0\n\
 Maintainer: Junghanacs\n\
 Description: Emacs with native compilation, X11 gtk and tree-sitter\n\
     --with-json \
