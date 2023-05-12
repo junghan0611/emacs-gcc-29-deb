@@ -8,7 +8,7 @@ RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list &&\
     apt-transport-https\
     ca-certificates\
     build-essential \
-    gcc-12 g++-12 libgccjit0 libgccjit-12-dev \
+    gcc-11 g++-11 libgccjit0 libgccjit-11-dev \
     autoconf \
     wget \
     cmake \
@@ -58,7 +58,7 @@ RUN update-ca-certificates \
     && mv emacs/* .
 
 # Build
-ENV CC="gcc-12" CXX="g++-12"
+ENV CC="gcc-11" CXX="g++-11"
 RUN ./autogen.sh && ./configure \
     --prefix "/usr/local" \
     --with-json \

@@ -2,7 +2,7 @@
 
 # 여기 보고 한다.
 # https://github.com/Riey/kime
-sudo docker build --file Dockerfile --tag emacs-gcc-29:git .
+sudo docker build --file ./build-docker/ubuntu-22.04/Dockerfile --tag emacs-gcc-29:git .
 sudo docker run --name emacs-gcc-29 emacs-gcc-29:git
 sudo docker cp emacs-gcc-29:/opt/deploy .
 
