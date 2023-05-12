@@ -2,16 +2,13 @@ FROM ubuntu:22.04
 WORKDIR /opt
 ENV DEBIAN_FRONTEND=noninteractive
 
-# GCC 버전 10. 20.04 기반이라 그렇군 (HAMONI)
-# RUN apt install -y gcc-10 g++-10 libgccjit0 libgccjit-10-dev
-
 RUN sed -i -re 's/([a-z]{2}.)?archive.ubuntu.com|security.ubuntu.com/mirror.kakao.com/g' /etc/apt/sources.list
 RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list &&\
     apt-get update && apt-get install --yes --no-install-recommends  \
     apt-transport-https\
     ca-certificates\
     build-essential \
-    gcc-11 g++-11 libgccjit0 libgccjit-11-dev \
+    gcc-12 g++-12 libgccjit0 libgccjit-12-dev \
     autoconf \
     wget \
     cmake \
@@ -61,7 +58,7 @@ RUN update-ca-certificates \
     && mv emacs/* .
 
 # Build
-ENV CC="gcc-11" CXX="g++-11"
+ENV CC="gcc-12" CXX="g++-12"
 RUN ./autogen.sh && ./configure \
     --prefix "/usr/local" \
     --with-json \
@@ -87,7 +84,10 @@ Version: ${EMACS_VERSION}\n\
 Section: base\n\
 Priority: optional\n\
 Architecture: amd64\n\
-Depends: libvterm0, libgif7, libotf1, libgccjit0, libgtk-3-0, librsvg2-2, libtiff5, libjansson4, libacl1, libgmp10, libwebp7, libsqlite3-0\n\
+Depends: fonts-noto-color-emoji, fonts-symbola, fonts-naver-d2coding, fonts-nanum-coding, fonts-nanum-extra, fonts-nanum \
+fonts-noto-cjk, zathura, zathura-pdf-poppler, libvterm-bin, libvterm0, libtool-bin, fasd, cmake, texinfo, libjansson4 \
+imagemagick, inkscape, sqlite3, ripgrep, fd-find, locate, aspell, hunspell, hunspell-ko \
+libgif7, libotf1, libgccjit0, libgtk-3-0, librsvg2-2, libtiff5, libjansson4, libacl1, libgmp10, libwebp7, libsqlite3-0\n\
 Conflicts: emacs\n\
 Maintainer: Junghanacs\n\
 Description: Emacs with native compilation, X11 gtk and tree-sitter\n\
