@@ -11,7 +11,10 @@ RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list &&\
     apt-transport-https\
     ca-certificates\
     build-essential \
+    gcc-11 g++-11 libgccjit0 libgccjit-11-dev \
     autoconf \
+    wget \
+    cmake \
     git \
     pkg-config \
     libgnutls28-dev \
@@ -23,7 +26,6 @@ RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list &&\
     libotf-dev \
     libsystemd-dev \
     libjansson-dev \
-    libgccjit-11-dev \
     libgif-dev \
     librsvg2-dev  \
     libxml2-dev \
@@ -46,8 +48,12 @@ RUN sed -i 's/# deb-src/deb-src/' /etc/apt/sources.list &&\
     libpoppler-glib-dev \
     libz-dev \
     libxaw7-dev libxaw3dxft8-dev \
-    libwebkit2gtk-4.0-dev \
-    libtree-sitter-dev
+    libwebkit2gtk-4.0-dev
+RUN wget https://github.com/tree-sitter/tree-sitter/archive/v0.20.8.tar.gz \
+    && tar xzf v0.20.8.tar.gz && cd tree-sitter-0.20.8 && make -j && make install
+# RUN echo "/usr/local/lib/" >> /etc/ld.so.conf
+RUN export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/
+RUN ldconfig
 
 # Clone emacs
 RUN update-ca-certificates \
@@ -55,7 +61,7 @@ RUN update-ca-certificates \
     && mv emacs/* .
 
 # Build
-ENV CC="gcc-11"
+ENV CC="gcc-11" CXX="g++-11"
 RUN ./autogen.sh && ./configure \
     --prefix "/usr/local" \
     --with-json \
@@ -65,7 +71,7 @@ RUN ./autogen.sh && ./configure \
     --without-mailutils \
     --with-sqlite3 \
     --with-png --with-jpeg --with-tiff --with-imagemagick=ifavailable \
-    --with-tree-sitter=ifavailable \
+    --with-tree-sitter \
     --with-cairo --with-lcms2 --with-modules --with-xwidgets --with-x-toolkit=gtk3 \
     --program-transform-name='s/^ctags$/ctags.emacs/' \
     --with-native-compilation=aot CFLAGS="-O2 -pipe"
@@ -81,7 +87,7 @@ Version: ${EMACS_VERSION}\n\
 Section: base\n\
 Priority: optional\n\
 Architecture: amd64\n\
-Depends: libtree-sitter0, libgif7, libotf1, libgccjit0, libgtk-3-0, librsvg2-2, libtiff5, libjansson4, libacl1, libgmp10, libwebp7, libsqlite3-0\n\
+Depends: libvterm0, libgif7, libotf1, libgccjit0, libgtk-3-0, librsvg2-2, libtiff5, libjansson4, libacl1, libgmp10, libwebp7, libsqlite3-0\n\
 Conflicts: emacs\n\
 Maintainer: Junghanacs\n\
 Description: Emacs with native compilation, X11 gtk and tree-sitter\n\
@@ -92,7 +98,7 @@ Description: Emacs with native compilation, X11 gtk and tree-sitter\n\
     --without-mailutils \
     --with-sqlite3 \
     --with-png --with-jpeg --with-tiff --with-imagemagick=ifavailable \
-    --with-tree-sitter=ifavailable \
+    --with-tree-sitter \
     --with-cairo --with-lcms2 --with-modules --with-xwidgets --with-x-toolkit=gtk3 \
     --program-transform-name='s/^ctags$/ctags.emacs/' \
     --with-native-compilation=aot CFLAGS='-O2 -pipe'" \
