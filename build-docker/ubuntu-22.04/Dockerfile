@@ -88,7 +88,6 @@ Depends: fonts-noto-color-emoji, fonts-symbola, fonts-naver-d2coding, fonts-nanu
 fonts-noto-cjk, zathura, zathura-pdf-poppler, libvterm-bin, libvterm0, libtool-bin, fasd, cmake, texinfo, libjansson4 \
 imagemagick, inkscape, sqlite3, ripgrep, fd-find, locate, aspell, hunspell, hunspell-ko \
 libgif7, libotf1, libgccjit0, libgtk-3-0, librsvg2-2, libtiff5, libjansson4, libacl1, libgmp10, libwebp7, libsqlite3-0\n\
-Conflicts: emacs\n\
 Maintainer: Junghanacs\n\
 Description: Emacs with native compilation, X11 gtk and tree-sitter\n\
     --with-json \
